@@ -20,8 +20,11 @@ function! bufcond#BufDo( op, tst, iflt ) abort
   return map( filter( getbufinfo( a:iflt ), { _,v -> Tst( v ) }), {_,v -> Op( v.bufnr ) })
 endfunction
 
-" Wipeout invisible unmod buffers
+"" Wipeout invisible unmod buffers
 " call bufcond#BufDo( 'bw', {v -> !len( v.windows ) && !v.changed }, #{} )
-" echo join( bufcond#BufDo( { v -> v->bufinfo()[0] }, { v -> !v.loaded }, #{} ), "\n" )
+"" Merely unload said buffers, if loaded (must check, or stops early on error)
+" call bufcond#BufDo( { b -> execute( 'bunload ' .. b ) }, { v -> !len( v.windows ) && !v.changed && v.loaded }, #{} )
+"" Get info on unloaded buffers
+" Bufferize echo join( bufcond#BufDo( { v -> v->bufinfo()[0] }, { v -> !v.loaded }, #{} ), "\n" )
 "
 " see :h getbufinfo()
